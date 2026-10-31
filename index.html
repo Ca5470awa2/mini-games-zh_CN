@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>小游戏合集</title>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;min-height:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    color:#e8eaf6;
+    background:radial-gradient(900px 520px at 50% 0%,#2f3475 0%,#14152e 55%,#08080f 100%) fixed;
+    padding:0 0 40px;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ===== 顶部 ===== */
+  .top{text-align:center;padding:34px 18px 22px}
+  .top .em{display:flex;justify-content:center;margin-bottom:10px}
+  .top .lg{
+    font-size:34px;font-weight:900;letter-spacing:7px;line-height:1.2;
+    background:linear-gradient(90deg,#ffe28a,#ffb35c,#ff7bd5,#7b83ff,#6ee7ff);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .top .sub{font-size:11px;letter-spacing:3px;opacity:.55;margin-top:6px}
+  .top .cnt{
+    display:inline-block;margin-top:12px;font-size:10.5px;font-weight:800;
+    padding:4px 12px;border-radius:999px;
+    background:rgba(255,215,110,.14);border:1px solid rgba(255,215,110,.3);color:#ffd76e;
+  }
+
+  /* ===== 列表 ===== */
+  .wrap{max-width:560px;margin:0 auto;padding:0 16px}
+  .secT{
+    font-size:11px;font-weight:800;opacity:.5;letter-spacing:2px;
+    margin:6px 0 12px;padding-left:2px;
+  }
+
+  .card{
+    display:flex;gap:13px;align-items:flex-start;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:16px;padding:14px;margin-bottom:12px;
+    cursor:pointer;position:relative;overflow:hidden;
+    transition:transform .16s,border-color .16s,background .16s;
+  }
+  .card:hover{
+    transform:translateY(-2px);
+    border-color:rgba(255,215,110,.38);
+    background:rgba(255,255,255,.075);
+  }
+  .card:active{transform:translateY(0) scale(.99)}
+  .card::before{
+    content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:linear-gradient(180deg,#ffd76e,#ff7bd5);
+  }
+
+  .cIco{
+    width:58px;height:58px;flex:none;border-radius:15px;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,#ffd76e,#ff9d5c);
+    box-shadow:0 5px 16px rgba(255,157,92,.28);
+  }
+  .cMain{flex:1;min-width:0}
+  .cName{font-size:16px;font-weight:900;letter-spacing:.5px}
+  .cEn{font-size:9.5px;opacity:.45;letter-spacing:1.5px;margin-top:2px}
+  .cDesc{
+    font-size:11.5px;line-height:1.6;opacity:.72;margin-top:7px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .cTags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+  .tag{
+    font-size:9px;font-weight:800;padding:2.5px 8px;border-radius:999px;
+    background:rgba(110,231,255,.13);border:1px solid rgba(110,231,255,.24);color:#6ee7ff;
+  }
+  .tag.hot{background:rgba(255,123,213,.14);border-color:rgba(255,123,213,.3);color:#ff9bd5}
+  .tag.gold{background:rgba(255,215,110,.14);border-color:rgba(255,215,110,.3);color:#ffd76e}
+  .cFoot{
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    margin-top:9px;padding-top:8px;border-top:1px solid rgba(255,255,255,.07);
+  }
+  .cVer{font-size:9.5px;opacity:.5;font-weight:700}
+  .cGo{
+    font-size:11px;font-weight:900;padding:6px 15px;border-radius:999px;border:none;
+    background:linear-gradient(135deg,#ffd98a,#ffb35c,#ff9d5c);color:#3a2405;
+    box-shadow:0 3px 0 #c9832f;letter-spacing:.5px;
+  }
+  .cGo:active{transform:translateY(3px);box-shadow:0 0 0 #c9832f}
+
+  /* ===== 占位卡 ===== */
+  .card.soon{
+    cursor:default;opacity:.42;
+    border-style:dashed;border-color:rgba(255,255,255,.16);
+  }
+  .card.soon:hover{transform:none;background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.16)}
+  .card.soon::before{background:rgba(255,255,255,.2)}
+  .card.soon .cIco{
+    background:rgba(255,255,255,.08);box-shadow:none;border:1px dashed rgba(255,255,255,.24);
+  }
+
+  /* ===== 底部 ===== */
+  .foot{
+    max-width:560px;margin:22px auto 0;padding:14px 16px 0;
+    border-top:1px solid rgba(255,255,255,.08);
+    font-size:10.5px;line-height:1.9;opacity:.5;text-align:center;
+  }
+  .foot b{color:#ffd76e;opacity:.9}
+
+  @media (max-width:400px){
+    .top .lg{font-size:28px;letter-spacing:5px}
+    .cIco{width:52px;height:52px}
+    .cName{font-size:15px}
+  }
+
+  /* ===== 访问次数弹窗 ===== */
+  .vstMask{
+    position:fixed;inset:0;z-index:99;display:none;
+    align-items:center;justify-content:center;padding:20px;
+    background:rgba(8,8,15,.72);
+  }
+  .vstMask.show{display:flex}
+  .vstBox{
+    width:min(88vw,330px);border-radius:20px;padding:22px 20px 16px;text-align:center;
+    background:linear-gradient(165deg,#272c52,#171a33);
+    border:1px solid rgba(255,215,110,.26);
+    box-shadow:0 18px 50px rgba(0,0,0,.55);
+    animation:vstPop .3s cubic-bezier(.2,1.3,.4,1);
+  }
+  @keyframes vstPop{from{transform:scale(.86);opacity:0}to{transform:scale(1);opacity:1}}
+  .vstIco{
+    width:52px;height:52px;margin:0 auto 10px;border-radius:16px;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,#ffd76e,#ff9d5c);
+    box-shadow:0 5px 16px rgba(255,157,92,.3);
+  }
+  .vstTitle{font-size:14px;font-weight:900;letter-spacing:1px}
+  .vstDate{font-size:10px;opacity:.5;margin-top:4px;letter-spacing:.5px}
+  .vstNums{display:flex;gap:10px;margin:16px 0 12px}
+  .vstCell{
+    flex:1;padding:11px 4px;border-radius:13px;
+    background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);
+  }
+  .vstCell b{
+    display:block;font-size:21px;font-weight:900;line-height:1.15;
+    background:linear-gradient(135deg,#ffe28a,#ffb35c);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .vstCell.cy b{background:linear-gradient(135deg,#9dffcf,#6ee7ff);-webkit-background-clip:text;background-clip:text}
+  .vstCell span{display:block;font-size:9.5px;opacity:.55;margin-top:3px}
+  .vstTip{font-size:10.5px;opacity:.5;line-height:1.75}
+  .vstBtn{
+    margin-top:15px;width:100%;padding:11px;border:none;border-radius:13px;
+    font-family:inherit;font-size:13px;font-weight:900;letter-spacing:1px;
+    background:linear-gradient(135deg,#ffd98a,#ffb35c);color:#3a2405;
+    box-shadow:0 3px 0 #c9832f;
+  }
+  .vstBtn:active{transform:translateY(3px);box-shadow:0 0 0 #c9832f}
+  .vstOff{
+    margin-top:15px;font-size:11px;opacity:.45;line-height:1.7;
+    padding:10px;border-radius:11px;background:rgba(255,255,255,.04);
+    border:1px dashed rgba(255,255,255,.12);display:none;
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="em">
+    <svg viewBox="0 0 24 24" width="54" height="54">
+      <path d="M4 20l6-6" fill="none" stroke="#ff8a8a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M14 4l6 6" fill="none" stroke="#c58aff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M3 17l4 4 2-2-4-4z" fill="none" stroke="#ff8a8a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M15 3l4 4 2-2-4-4z" fill="none" stroke="#ff8a8a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M6.5 13.5l4 4" fill="none" stroke="#ff8a8a" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="lg">小 游 戏 合 集</div>
+  <div class="sub">MINI GAMES · 一个入口，玩转全部</div>
+  <div class="cnt" id="gCnt">共 0 款游戏</div>
+</div>
+
+<div class="wrap">
+  <div class="secT">全部游戏</div>
+  <div id="list"></div>
+
+  <div class="secT" style="margin-top:18px">敬请期待</div>
+  <div class="card soon">
+    <div class="cIco">
+      <svg viewBox="0 0 24 24" width="30" height="30">
+        <path d="M12 5v14M5 12h14" fill="none" stroke="#9aa0c4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="cMain">
+      <div class="cName">新游戏</div>
+      <div class="cEn">COMING SOON</div>
+      <div class="cDesc">更多小游戏正在制作中，敬请期待</div>
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+    所有游戏<b>纯前端运行</b>，无需联网、无需安装<br>
+  进度保存在本机浏览器，换设备可用<b>存档导出</b>带走<br>
+  <span id="fVer"></span>
+</div>
+
+<!-- ===== 访问次数弹窗 ===== -->
+<div class="vstMask" id="vstMask">
+  <div class="vstBox">
+    <div class="vstIco">
+      <svg viewBox="0 0 24 24" width="28" height="28">
+        <path d="M2 12h4l2-6 3 12 3-9 2 5h6" fill="none" stroke="#3a2405" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="vstTitle">欢迎来到小游戏合集</div>
+    <div class="vstDate" id="vstDate"></div>
+    <div class="vstNums">
+      <div class="vstCell"><b id="vstToday">-</b><span>今日访问</span></div>
+      <div class="vstCell cy"><b id="vstTotal">-</b><span>累计访问</span></div>
+    </div>
+    <div class="vstTip" id="vstTip">数据由 Redis 实时记录</div>
+    <div class="vstOff" id="vstOff">未连接到统计服务<br>用 http 方式打开本页即可启用</div>
+    <button class="vstBtn" id="vstOk">开 始 浏 览</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   游戏清单 —— 以后新增小游戏，只需在下面数组里加一项：
+
+   {
+     name:'游戏名', en:'ENGLISH NAME',
+     file:'idle_hero/index.html', // 游戏放在 idle_hero 子目录
+     desc:'一句话简介',
+     tags:['标签1','标签2'],       // 第 1 个标签默认高亮为金色
+     ver:'v1.00.000',  // ← 游戏更新后记得同步这里的版本号（格式 x.xx.xxx）
+     ico:`<svg>...</svg>`,        // 图标 SVG（白色描边，会自动着色）
+     grad:'linear-gradient(135deg,#xxx,#yyy)'   // 图标底色
+   }
+   ============================================================ */
+const GAMES = [
+  {
+    name:'放置英雄',
+    en:'IDLE HERO',
+    file:'idle_hero/index.html',
+    desc:'挂机放置冒险：30 个场景、21 只宠物、33 节点升级树、28 条强化、38 个版本迭代与轮回重生。',
+    tags:['放置挂机','角色扮演','收集养成'],
+    ver:'v2.08.000',
+    grad:'linear-gradient(135deg,#ffd76e,#ff9d5c)',
+    ico:`<svg viewBox="0 0 24 24" width="30" height="30">
+      <path d="M4 20l6-6" fill="none" stroke="#3a2405" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M14 4l6 6" fill="none" stroke="#3a2405" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M3 17l4 4 2-2-4-4z" fill="none" stroke="#3a2405" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M15 3l4 4 2-2-4-4z" fill="none" stroke="#3a2405" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`
+  }
+  /* ↓↓↓ 以后新增游戏就加在这里 ↓↓↓ */
+];
+
+function render(){
+  const list = document.getElementById('list');
+  document.getElementById('gCnt').textContent = `共 ${GAMES.length} 款游戏`;
+  list.innerHTML = GAMES.map((g, i) => `
+    <div class="card" data-file="${g.file}" data-i="${i}">
+      <div class="cIco" style="background:${g.grad}">${g.ico}</div>
+      <div class="cMain">
+        <div class="cName">${g.name}</div>
+        <div class="cEn">${g.en}</div>
+        <div class="cDesc">${g.desc}</div>
+        <div class="cTags">
+          ${g.tags.map((t, k) => `<span class="tag${k === 0 ? ' gold' : (k === 1 ? ' hot' : '')}">${t}</span>`).join('')}
+        </div>
+        <div class="cFoot">
+          <span class="cVer">${g.ver}</span>
+          <button class="cGo">开始游戏</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // 点击整张卡片打开游戏
+  list.querySelectorAll('.card').forEach(c => {
+    c.onclick = () => {
+      const f = c.getAttribute('data-file');
+      if(f) location.href = f;
+    };
+  });
+}
+render();
+document.getElementById('fVer').textContent = '合集页面 v1.0';
+
+
+function syncVersions(){
+  GAMES.forEach(g => {
+    if(!g.file) return;
+    fetch(g.file, {cache:'no-store'})
+      .then(r => r.ok ? r.text() : null)
+      .then(txt => {
+        if(!txt) return;
+        const m = txt.match(/GAME_VER\s*=\s*['\"]([^'\"]+)['\"]/);
+        if(!m || m[1] === g.ver) return;
+        g.ver = m[1];                       // 更新为真实版本
+        const i = GAMES.indexOf(g);
+        const card = document.querySelectorAll('#list .cVer')[i];
+        if(card) card.textContent = m[1];
+      })
+      .catch(() => {});                     // file:// 下失败，静默忽略
+  });
+}
+try{ syncVersions(); }catch(e){}
+
+/* ============================================================
+   今日访问次数 / 累计访问次数
+   ------------------------------------------------------------
+   数据来源：api.php（PHP 服务器）或 Cloudflare Worker。
+   直接双击打开（file://）时也能弹窗，只是读不到数，会提示未连接。
+   接口地址不对时，改下面这个常量即可。
+   ============================================================ */
+
+/* ↓↓↓ 后端地址：部署好 Cloudflare Worker 后，把下面这行换成你的 Worker 地址 ↓↓↓
+   例如：const VISIT_API = 'https://idle-hero-api.你的账号.workers.dev';
+   想改回服务器上的 PHP 版，就填 'api.php' */
+const VISIT_API = 'https://idle-hero-api.3768492716.workers.dev';
+
+function numFmt(n){
+  n = Number(n) || 0;
+  if(n >= 1e8) return (n / 1e8).toFixed(2) + '亿';
+  if(n >= 1e4) return (n / 1e4).toFixed(1) + '万';
+  return String(n);
+}
+
+function showVisitBox(d, offline){
+  const mask = document.getElementById('vstMask');
+  document.getElementById('vstDate').textContent =
+    d && d.date ? (d.date + ' · 共 ' + (d.users || 0) + ' 位玩家注册') : '';
+  document.getElementById('vstToday').textContent = d ? numFmt(d.today) : '-';
+  document.getElementById('vstTotal').textContent = d ? numFmt(d.total) : '-';
+  document.getElementById('vstTip').style.display   = offline ? 'none' : '';
+  document.getElementById('vstOff').style.display   = offline ? 'block' : 'none';
+  mask.classList.add('show');
+}
+
+/* 每次打开本页都记录一次访问并弹出提示 */
+function loadVisit(){
+  const done = (d, offline) => showVisitBox(d, offline);
+  try{
+    fetch(VISIT_API + '?action=visit', {cache:'no-store'})
+      .then(r => { if(!r.ok) throw 0; return r.json(); })
+      .then(j => { if(j && j.ok) done(j.data, false); else done(null, true); })
+      .catch(() => done(null, true));       // 没有后端：仍然弹窗，提示未连接
+  }catch(e){ done(null, true); }
+}
+loadVisit();
+document.getElementById('vstOk').onclick = () => {
+  document.getElementById('vstMask').classList.remove('show');
+};
+document.getElementById('vstMask').onclick = e => {
+  if(e.target === document.getElementById('vstMask')) e.currentTarget.classList.remove('show');
+};
+</script>
+</body>
+</html>
