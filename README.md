@@ -9,6 +9,7 @@
 # 更新日志
 *在游戏内*
 (不是因为我懒不想写)
+
 'en'
 # introduce
 This is a small game project of mine,
